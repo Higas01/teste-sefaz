@@ -1,0 +1,43 @@
+services:
+  backend:
+    container_name: backend-teste-sefaz
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    working_dir: /app
+    ports:
+      - 8000:8000
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=teste_sefaz
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - JWT_SECRET=hQoxfA77K9b4oFq41SayIoJZRfahwRhXWNByu63zgrAXfXVL8ysKPqqgx0rp23gi
+    entrypoint: >
+      sh -c "
+        wait-for db:3306 --timeout=30 -- php artisan migrate &&
+        php artisan serve --host=0.0.0.0 --port=8000
+      "
+  frontend:
+    container_name: frontend-teste-sefaz
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    working_dir: /app
+    entrypoint: >
+      sh -c "
+        --host=0.0.0.0 --port=8000
+        wait-for backend:8000 --timeout=30 -- pnpm run dev --host=0.0.0.0
+      "
+    ports:
+      - 3000:3000
+
+  db:
+    image: mysql:8.4.2
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: teste_sefaz
