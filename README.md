@@ -43,6 +43,24 @@ O sistema utiliza um CRUD de funcionários de acordo com os padrões exigidos no
 
 ### Passos
 
+- Crie uma psata
+
+```
+mkdir teste-sefaz
+```
+
+- entre na pasta criada
+
+```
+cd ./teste-sefaz
+```
+
+- clone o repositório
+
+```
+git clone https://github.com/Higas01/teste-sefaz.git .
+```
+
 - Executar o comando
 
 ```
